@@ -25,14 +25,20 @@ public class LinkedList<T>
 		this.head=null;
 		this.tail=null;
 	}
+	
+	//function to return the size(number of nodes) in the linkedlist
 	public int size()
 	{
 		return this.size();
 	}
+	
+	//function to check if linkedlist is empty
 	public boolean isEmpty()
 	{
 		return this.size()==0;
 	}
+	
+	//function to add a node at the beginning(head) of a linkedlist
 	public void addFirst(T item)
 	{
 		Node node=new Node(item,this.head);
@@ -43,6 +49,8 @@ public class LinkedList<T>
 
 		this.size++;
 	}
+	
+	//function to add a note at the end(tail) of a linkedlist
 	public void addLast(T item)
 	{
 		Node node=new Node(item,null);
@@ -58,7 +66,9 @@ public class LinkedList<T>
 		}
 		this.size++;
 	}
-	public void getNode(int index) throws Exception
+	
+	//function to return the node present at index
+	public Node getNode(int index) throws Exception
 	{
 		if(index<0||index>=this.size())
 			throw new Exception("Index Out Of Range");
@@ -70,7 +80,9 @@ public class LinkedList<T>
 			counter++;
 		}
 		return temp;
-	}	
+	}
+	
+	//function to add an item at the given index
 	public void addAt(int index,T item)throws Exception
 	{
 		if(index<0||index>this.size())
@@ -87,18 +99,24 @@ public class LinkedList<T>
 			this.size++;
 		}
 	}
+	
+	//function to get the first item of the linkedlist
 	public T getFirst() throws Exception
 	{
 		if(this.isEmpty())
 			throw new Exception("List Is Empty");
 		return this.head.data;
 	}
+	
+	//function to get the last item of the linkedlist
 	public T getLast() throws Exception
 	{
 		if(this.isEmpty())
 			throw new Exception("List Is Empty");
 		return this.tail.data;
 	}
+	
+	//function to return the data present at the index in the linkedlist
 	public T getAt(int index)throws Exception
 	{
 		if(this.isEmpty())
@@ -108,6 +126,8 @@ public class LinkedList<T>
 		Node temp=this.getNode(index);
 		return temp.data;
 	}
+	
+	//function to remove the first node from the linked list
 	public T removeFirst() throws Exception
 	{
 		if(this.isEmpty())
@@ -125,6 +145,8 @@ public class LinkedList<T>
 		this.size--;
 		return rv.data;
 	}
+	
+	//function to remove the last node from the linkedlist
 	public T removeLast() throws Exception
 	{
 		if(this.isEmpty())
@@ -144,6 +166,8 @@ public class LinkedList<T>
 		this.size--;
 		return rv.data;
 	}
+	
+	//funbction to remove node present at index in the linkedlist
 	public T removeAt(int index) throws Exception
 	{
 		if(this.isEmpty())
@@ -163,6 +187,8 @@ public class LinkedList<T>
 			return rv.data;
 		}
 	}
+	
+	//function to display items present in the linkedlist
 	public void display() throws Exception
 	{
 		if(this.isEmpty())
@@ -175,6 +201,8 @@ public class LinkedList<T>
 		}
 		System.out.println("END");
 	}
+	
+	//function to return the index of an item if present in the linkedlist
 	public int find(T data)
 	{
 		int index=0;
