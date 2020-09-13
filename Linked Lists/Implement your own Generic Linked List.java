@@ -167,7 +167,7 @@ public class LinkedList<T>
 		return rv.data;
 	}
 	
-	//funbction to remove node present at index in the linkedlist
+	//function to remove node present at index in the linkedlist
 	public T removeAt(int index) throws Exception
 	{
 		if(this.isEmpty())
