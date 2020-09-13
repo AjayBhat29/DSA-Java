@@ -1,4 +1,4 @@
-The Generic Linked List and HashTable classes are defined in the pacakge named selfHashMap.
+The generic LinkedList and HashTable classes are defined in the pacakge named selfHashMap.
 
 Execute the hashClient.java file which contains the main function. 
 The selfHashMap package has been imported in the hashClient.java file.
