@@ -29,7 +29,7 @@ public class LinkedList<T>
 	//function to return the size(number of nodes) in the linkedlist
 	public int size()
 	{
-		return this.size();
+		return this.size;
 	}
 	
 	//function to check if linkedlist is empty
