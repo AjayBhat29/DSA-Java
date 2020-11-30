@@ -12,7 +12,9 @@ Once the tree is constructed, how to get the sum using the constructed segment t
 The following is the algorithm to get the sum of elements.
 
 int getSum(node, l, r) 
+
 {
+
    if the range of the node is within l and r
         return value in the node
    else if the range of the node is completely outside l and r
@@ -20,6 +22,7 @@ int getSum(node, l, r)
    else
     return getSum(node's left child, l, r) + 
            getSum(node's right child, l, r)
+
 }
 
 Update a value:
