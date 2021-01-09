@@ -1,5 +1,5 @@
 /*
-Remove Nth end from end of Linked List 
+Remove Nth node from end of Linked List 
 */
 
 class Solution {
