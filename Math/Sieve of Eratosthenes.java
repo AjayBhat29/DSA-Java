@@ -1,66 +1,36 @@
-/* Sieve of Eratosthenes
+/* Count the number of prime numbers less than a non-negative number, n.
 
-Given a number N, calculate the prime numbers upto N using Sieve of Eratosthenes.  
+Example 1:
+Input: n = 10
+Output: 4
+Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
 
-Input: 
-The first line of the input contains T denoting the number of testcases. T testcases follow. Each testcase contains one line of input containing N.
+Example 2:
+Input: n = 0
+Output: 0
 
-Output: 
-For all testcases, in a new line, print all the prime numbers upto or equal to N.
-
+Example 3:
+Input: n = 1
+Output: 0
+ 
 Constraints:
-1 <= T<= 100
-1 <= N <= 104
-
-Example:
-Input:
-2
-10
-35
-Output:
-2 3 5 7
-2 3 5 7 11 13 17 19 23 29 31 */
-
-
-import java.util.*;
-import java.lang.*;
-import java.io.*;
-
-class GFG {
-	public static void main (String[] args) throws IOException{
-		//code
-		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
-		int T=Integer.parseInt(br.readLine());
-		while(T-->0)
-		{
-		    int n=Integer.parseInt(br.readLine());
-		    SOE(n);
-		}
-	}
-	
-	static void SOE(int n)
-	{
-	    boolean []primes=new boolean[n+1];
-
-        
-        for(int mult=2;mult*mult<=n;mult++)
+0 <= n <= 5 * 10^6 */
+class Solution {
+    public int countPrimes(int n) {
+        boolean []primes=new boolean[n+1];
+        Arrays.fill(primes,true);
+        int count=0;
+        for(int i=2;i*i<=n;i++)
         {
-            if(!primes[mult])
+            if(primes[i]==true)
             {
-                for(int table=2;table*mult<=n;table++)
-                {
-                    primes[table*mult]=true;
-                }
+                for(int j=i*i;j<=n;j=j+i)
+                    primes[j]=false;
             }
         }
-        
-        StringBuilder ans=new StringBuilder();
-        for(int i=2;i<=n;i++)
-        {
-            if(!primes[i])
-                ans.append(i+" ");
-        }
-        
-        System.out.println(ans);
-	}
+        for(int i=2;i<n;i++)
+            if(primes[i]==true)
+                count++;
+        return count;
+    }
 }
