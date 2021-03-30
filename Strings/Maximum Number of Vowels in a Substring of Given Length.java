@@ -37,3 +37,34 @@ Constraints:
 1 <= s.length <= 10^5
 s consists of lowercase English letters.
 1 <= k <= s.length */
+class Solution {
+    public int maxVowels(String s, int k) {
+        int i=0;
+        int j=k-1;
+        int count=0;
+        for(int x=i;x<=j;x++)
+            if(isVowel(s.charAt(x)))
+                count++;
+        int n=s.length();
+        int max=count;
+        while(true)
+        {
+            if(j+1==n)
+                break;
+            char cur_i=s.charAt(i);
+            char next_j=s.charAt(j+1);
+            if(isVowel(cur_i))
+                count--;
+            if(isVowel(next_j))
+                count++;
+            max=Math.max(max,count);
+            i++;
+            j=i+k-1;
+        }
+        return max;
+    }
+    boolean isVowel(char c)
+    {
+        return c=='a'||c=='e'||c=='i'||c=='o'||c=='u';
+    }
+}
