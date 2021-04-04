@@ -30,44 +30,94 @@ Constraints:
 
 Methods pop, top and getMin operations will always be called on non-empty stacks. */
 
+//-----------------------------------------------------------------------------------
+// Method 1 - Using O(n) extra space (Using Supporting Stack)
+
 class MinStack {
 
     /** initialize your data structure here. */
-    Stack<MyStack> stack;
+    Stack<Integer> main_stack;
+    Stack<Integer> supporting_stack;
+    public MinStack() {
+        main_stack = new Stack<>();
+        supporting_stack = new Stack<>();
+    }
+    
+    public void push(int val) {
+        main_stack.push(val);
+        if(supporting_stack.empty() || val<=supporting_stack.peek())
+            supporting_stack.push(val);
+            
+    }
+    
+    public void pop() {
+        if(main_stack.size()==0)
+            return;
+        int ans=main_stack.pop();
+        if(ans==supporting_stack.peek())
+            supporting_stack.pop();
+    }
+    
+    public int top() {
+        if(main_stack.size()==0)
+            return -1;//stack empty
+        return main_stack.peek();
+    }
+    
+    public int getMin() {
+        if(supporting_stack.size()==0)
+            return -1;//supporting stack empty
+        return supporting_stack.peek();
+    }
+}
+//-----------------------------------------------------------------------
+//Method 2 - Using single stack of data type Pair
+
+class MinStack {
+
+    /** initialize your data structure here. */
+    Stack<Pair> stack;
     public MinStack() {
         stack=new Stack<>();
     }
     
-    public void push(int x) {
-        int min = x;
+    public void push(int val) {
+        int min=val;
         if(!stack.empty())
-            min = Math.min(min,stack.peek().min);
-        stack.push(new MyStack(x,min));
+            min=Math.min(min,stack.peek().min);
+        stack.push(new Pair(val,min));
     }
     
     public void pop() {
-        stack.pop();
+        if(!stack.empty())
+            stack.pop();
     }
     
     public int top() {
-        return stack.peek().element;
+        if(!stack.empty())
+            return stack.peek().val;
+        else
+            return -1;
     }
     
     public int getMin() {
-        return stack.peek().min;
+        if(!stack.empty())
+            return stack.peek().min;
+        else
+            return -1;
     }
 }
 
-class MyStack{
-    int element;
+class Pair
+{
+    int val;
     int min;
-    MyStack(int element,int min)
+    public Pair(int val,int min)
     {
-        this.element=element;
+        this.val=val;
         this.min=min;
     }
 }
-
 /**
  * Your MinStack object will be instantiated and called as such:
  * MinStack obj = new MinStack();
