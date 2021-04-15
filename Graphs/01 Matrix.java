@@ -29,6 +29,7 @@ The number of elements of the given matrix will not exceed 10,000.
 There are at least one 0 in the given matrix.
 The cells are adjacent in only four directions: up, down, left and right. */
 
+//Brute Force - BFS
 class Solution {
     static int cur,R,C;
     public int[][] updateMatrix(int[][] matrix) {
@@ -129,5 +130,47 @@ class Node
         this.x=x;
         this.y=y;
         this.distance=distance;
+    }
+}
+//------------------------------------------------------------------------------------------------------------
+//Optimal - DP
+class Solution {
+    static int cur,R,C;
+    public int[][] updateMatrix(int[][] matrix) {
+        R=matrix.length;
+        C=matrix[0].length;
+        int ans[][]=new int[R][C];
+        for(int i=0;i<R;i++) for(int j=0;j<C;j++) ans[i][j]=Integer.MAX_VALUE-100000;
+        
+        //top and left
+        for(int i=0;i<R;i++)
+        {
+            for(int j=0;j<C;j++)
+            {
+                if(matrix[i][j]==0)
+                    ans[i][j]=0;
+                else
+                {
+                    if(i>0)
+                        ans[i][j]=Math.min(ans[i][j],ans[i-1][j]+1);
+                    if(j>0)
+                        ans[i][j]=Math.min(ans[i][j],ans[i][j-1]+1);
+                }
+            }
+        }
+        
+        //down and right
+        for(int i=R-1;i>=0;i--)
+        {
+            for(int j=C-1;j>=0;j--)
+            {
+                if(i<R-1)
+                    ans[i][j]=Math.min(ans[i][j],ans[i+1][j]+1);
+                if(j<C-1)
+                    ans[i][j]=Math.min(ans[i][j],ans[i][j+1]+1);
+            }
+        }
+        
+        return ans;
     }
 }
