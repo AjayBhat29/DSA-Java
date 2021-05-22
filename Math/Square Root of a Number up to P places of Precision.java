@@ -1,5 +1,12 @@
 /* Given 2 integers N and P. Find the square root of N upto P places of precision using Binary Search technique */
 
+/******************************************************************************
+
+                            Online Java Compiler.
+                Code, Compile, Run and Debug java program online.
+Write your code in this editor and press "Run" button to execute it.
+
+*******************************************************************************/
 import java.util.*;
 import java.io.*;
 
@@ -18,7 +25,7 @@ public class Main
 	    int s=0;
 	    int e=N;
 	    int mid;
-	    float ans=0;
+	    double ans=0;
 	    
 	    //binary search for integer part
 	    while(s<=e){
@@ -39,7 +46,7 @@ public class Main
 	    }
 	    
 	    //linear search for floating decimal part
-	    float inc=(float)0.1;
+	    double inc=0.1;
 	    for(int place=1;place<=P;place++){
 	        while(ans*ans<=N)
 	            ans+=inc;
@@ -47,6 +54,6 @@ public class Main
 	        inc=inc/10;
 	    }
 
-	    return ans;
+	    return (float)ans;
 	}
 }
