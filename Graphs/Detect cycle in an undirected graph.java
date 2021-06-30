@@ -39,6 +39,59 @@ Testcase 1: There is a graph with 2 vertices and 1 edge from 0 to 1. So there is
 Testcase 2: There is a graph with 3 vertices and 3 edges from 0 to 1, 1 to 2 and 2 to 3.
 Testcase 3: There is a cycle in the given graph formed by vertices 2, 3 and 4. */
 
+
+// BFS Method
+class Solution
+{
+    //Function to detect cycle in an undirected graph.
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj)
+    {
+        // Code here
+        boolean []visited=new boolean[V];
+        for(int i=0;i<V;i++){
+            if(!visited[i]){
+                if(cycleBFS(i,adj,visited))
+                    return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean cycleBFS(int cur,ArrayList<ArrayList<Integer>> adj,boolean []visited){
+        Queue<Pair> q=new LinkedList<>();
+        q.add(new Pair(cur,-1));
+        visited[cur]=true;
+        
+        while(!q.isEmpty()){
+            int node=q.peek().first;
+            int parent=q.peek().second;
+            q.poll();
+            
+            for(int nbr:adj.get(node)){
+                if(!visited[nbr]){
+                    visited[nbr]=true;
+                    q.add(new Pair(nbr,node));
+                }
+                else if(parent!=nbr)
+                    return true;
+            }
+        }
+        return false;
+    }
+    
+    private class Pair{
+        int first;
+        int second;
+        Pair(int f,int s){
+            this.first=f;
+            this.second=s;
+        }
+    }
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+
+// DFS Method
 class DetectCycle
 {
     static boolean isCyclic(ArrayList<ArrayList<Integer>> g, int V)
