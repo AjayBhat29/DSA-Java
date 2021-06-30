@@ -19,24 +19,83 @@ Constraints:
 
 class Solution {
     public int jump(int[] nums) {
-        int[] dp = new int[nums.length + 1];
-        Arrays.fill(dp, -1);
-        return topDown(nums, 0, dp);
-    }
-
-    int topDown(int[] nums, int i, int[] dp) {
-        if (i == nums.length - 1)
-            return 0;
-        if (i >= nums.length)
-            return 1000001;
-        if (dp[i] != -1)
-            return dp[i];
-        int steps = 10000001;
-        for (int jump = 1; jump <= nums[i]; jump++) {
-            int next_cell = i + jump;
-            steps = Math.min(steps, topDown(nums, next_cell, dp));
+        int ans=0,farthest=0;
+        int left=0,right=0;
+        while(right<nums.length-1){
+            for(int i=left;i<=right;i++)
+                farthest=Math.max(farthest,i+nums[i]);
+            left=right+1;
+            right=farthest;
+            ans++;
         }
-        dp[i] = steps + 1;
-        return dp[i];
+        return ans;
+    }
+}
+
+//----------------------------------------------------------------------
+
+class Solution {
+    public int jump(int[] nums) {
+        int n=nums.length;
+        int []dp=new int[n];
+        dp[n-1]=0;
+        for(int i=n-2;i>=0;i--){
+            int min_jump=100001;
+            for(int j=1;j<=nums[i];j++){
+                int next_cell=i+j;
+                if(next_cell>=n)break;
+                min_jump=Math.min(min_jump,dp[next_cell]);
+            }
+            dp[i]=min_jump+1;
+        }
+        return dp[0];
+    }
+}
+
+//--------------------------------------------------------------------------
+
+class Solution {
+    public int jump(int[] nums) {
+        int []dp=new int[nums.length+1];
+        Arrays.fill(dp,-1);
+        return topDown(nums,0,dp);
+    }
+    int topDown(int []nums,int index,int []dp){
+        if(index==nums.length-1)
+            return 0;
+        if(index>=nums.length)
+            return 1000001;
+        if(dp[index]!=-1)
+            return dp[index];
+        
+        int steps=1000001;
+        int max_limit=nums[index];
+        for(int jump=1;jump<=max_limit;jump++){
+            int next_cell=jump+index;
+            steps=Math.min(steps,topDown(nums,next_cell,dp));
+        }
+        dp[index]=steps+1;
+        return dp[index];
+    }
+}
+
+//-------------------------------------------------------------------------
+
+class Solution {
+    public int jump(int[] nums) {
+        return recursive(nums,0);
+    }
+    int recursive(int []nums,int index){
+        if(index==nums.length-1)
+            return 0;
+        if(index>=nums.length)
+            return 1000001;
+        int steps=100001;
+        int max_limit=nums[index];
+        for(int jump=1;jump<=max_limit;jump++){
+            int next_cell=index+jump;
+            steps=Math.min(steps,recursive(nums,next_cell));
+        }
+        return steps+1;
     }
 }
