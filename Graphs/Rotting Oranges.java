@@ -29,100 +29,68 @@ grid[i][j] is 0, 1, or 2. */
 
 class Solution {
     int R,C;
-    int MAX=Integer.MAX_VALUE-100000;
     public int orangesRotting(int[][] grid) {
-        R=grid.length;
-        C=grid[0].length;
-        
-        int distance[][]=new int[R][C];
-        for(int i=0;i<R;i++)for(int j=0;j<C;j++)distance[i][j]=grid[i][j]==2?0:MAX;
-           
-        for(int i=0;i<R;i++)
-        {
+        R=grid.length;C=grid[0].length;
+    
+        Queue<Node> q=new LinkedList<>();
+        for(int i=0;i<R;i++){
             for(int j=0;j<C;j++)
-            {
                 if(grid[i][j]==2)
-                    BFS(grid,i,j,distance);
-            }
+                    q.add(new Node(i,j,0));
         }
         
-        int max=0;
-        for(int i=0;i<R;i++)
-        {
+        int total_time=0;
+        
+        while(!q.isEmpty()){
+            Node node=q.poll();
+            int x=node.x;
+            int y=node.y;
+            int time=node.time;
+            
+            if(isValid(x,y+1) && grid[x][y+1]==1){
+                grid[x][y+1]=2;
+                q.add(new Node(x,y+1,time+1));
+            }
+            
+            if(isValid(x,y-1) && grid[x][y-1]==1){
+                grid[x][y-1]=2;
+                q.add(new Node(x,y-1,time+1));
+            }
+            
+            if(isValid(x+1,y) && grid[x+1][y]==1){
+                grid[x+1][y]=2;
+                q.add(new Node(x+1,y,time+1));
+            }
+            
+            if(isValid(x-1,y) && grid[x-1][y]==1){
+                grid[x-1][y]=2;
+                q.add(new Node(x-1,y,time+1));
+            }
+            
+            total_time=Math.max(total_time,time);
+        }
+        
+        for(int i=0;i<R;i++){
             for(int j=0;j<C;j++)
-            {
-                if(distance[i][j]==MAX)
-                {
-                    if(grid[i][j]==1)
-                        return -1;
-                }
-                else
-                    max=Math.max(max,distance[i][j]);
-            }
+                if(grid[i][j]==1)
+                    return -1;
         }
         
-        return max;
+        return total_time;
     }
     
-    void BFS(int[][] grid,int X,int Y,int[][] distance)
-    {
-        LinkedList<Node> queue=new LinkedList<>();
-        boolean visited[][]=new boolean[R][C];
-        
-        queue.addLast(new Node(X,Y,0));
-        visited[X][Y]=true;
-        
-        while(!queue.isEmpty())
-        {
-            Node node=queue.removeFirst();
-            int x=node.x,y=node.y;
-            
-            if(isValid(x+1,y) && !visited[x+1][y] && grid[x+1][y]==1)
-            {
-                queue.addLast(new Node(x+1,y,node.distance+1));
-                visited[x+1][y]=true;
-                distance[x+1][y]=Math.min(distance[x+1][y],node.distance+1);
-            }
-            
-            if(isValid(x-1,y) && !visited[x-1][y] && grid[x-1][y]==1)
-            {
-                queue.addLast(new Node(x-1,y,node.distance+1));
-                visited[x-1][y]=true;
-                distance[x-1][y]=Math.min(distance[x-1][y],node.distance+1);
-            }
-            
-            if(isValid(x,y+1) && !visited[x][y+1] && grid[x][y+1]==1)
-            {
-                queue.addLast(new Node(x,y+1,node.distance+1));
-                visited[x][y+1]=true;
-                distance[x][y+1]=Math.min(distance[x][y+1],node.distance+1);
-            }
-            
-            if(isValid(x,y-1) && !visited[x][y-1] && grid[x][y-1]==1)
-            {
-                queue.addLast(new Node(x,y-1,node.distance+1));
-                visited[x][y-1]=true;
-                distance[x][y-1]=Math.min(distance[x][y-1],node.distance+1);
-            }
-        }
-    }
-    
-    boolean isValid(int x,int y)
-    {
-        return x>=0&&x<R&&y>=0&&y<C;
+    boolean isValid(int x,int y){
+        return x>=0 && x<R && y>=0 && y<C;
     }
 }
 
-class Node
-{
+class Node{
     int x;
     int y;
-    int distance;
-    
-    public Node(int x,int y,int distance)
-    {
+    int time;
+    public Node(int x,int y,int time){
         this.x=x;
         this.y=y;
-        this.distance=distance;
+        this.time=time;
     }
 }
