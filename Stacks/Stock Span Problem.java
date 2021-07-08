@@ -37,50 +37,27 @@ Constraints:
 1 ≤ C[i] ≤ 10^5 */
 
 
-class Solution{
-    
-    // Function to calculate span
-    // price[]: input array
-    public static int[] calculateSpan(int price[], int n)
-    {
-        // Your code here
-        Stack<Pair> stack=new Stack<>();
-        int a[]=new int[n];
-        for(int i=0;i<n;i++)
-        {
-            if(stack.empty())
-            {
-                a[i]=-1;
-            }
-            else if(!stack.empty() && stack.peek().ngl>price[i])
-            {
-                a[i]=stack.peek().index;
-            }
-            else if(!stack.empty() && stack.peek().ngl<=price[i])
-            {
-                while(!stack.empty() && stack.peek().ngl<=price[i])
-                    stack.pop();
-                if(stack.empty())
-                    a[i]=-1;
-                else
-                    a[i]=stack.peek().index;
-            }
-            stack.push(new Pair(price[i],i));
-        }
-        for(int i=0;i<n;i++)
-            a[i]=Math.abs(i-a[i]);
-        return a;
-    }
-    
-}
-
-class Pair
+class Solution
 {
-    int ngl;//nearest greater to left
-    int index;
-    public Pair(int ngl,int index)
-    {
-        this.ngl=ngl;
-        this.index=index;
+    //Function to calculate the span of stockâ€™s price for all n days.
+    public static int[] calculateSpan(int price[], int n){
+        // Your code here
+        int []ans=new int[n];
+        Stack<Integer> stack=new Stack<>();
+        ans[0]=1;
+        stack.push(0);
+        
+        for(int i=1;i<n;i++){
+            while(!stack.empty() && price[stack.peek()]<=price[i])
+                stack.pop();
+            if(stack.empty())
+                ans[i]=i+1;
+            else
+                ans[i]=i-stack.peek();
+            stack.push(i);
+        }
+        
+        return ans;
     }
+    
 }
