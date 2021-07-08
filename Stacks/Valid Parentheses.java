@@ -34,39 +34,20 @@ Constraints:
 s consists of parentheses only '()[]{}'.*/
 class Solution {
     public boolean isValid(String s) {
-        Stack<Character> st=new Stack<>();
-        boolean flag=false;
-        for(int i=0;i<s.length();i++)
-        {
-            char ch=s.charAt(i);
-            if(ch=='{'||ch=='['||ch=='(')
-                st.push(ch);
-            else
-            {
-                if(st.empty())
-                {
-                    flag=true;
-                    break;
-                }
-                else if(ch==')' && st.pop()!='(')
-                {
-                    flag=true;
-                    break;
-                }
-                else if(ch==']' && st.pop()!='[')
-                {
-                    flag=true;
-                    break;
-                }
-                else if(ch=='}' && st.pop()!='{')
-                {
-                    flag=true;
-                    break;
-                }
+        Stack<Character> stack=new Stack<>();
+        for(char c:s.toCharArray()){
+            if(c=='('||c=='['||c=='{')
+                stack.push(c);
+            else{
+                if(stack.empty())
+                    return false;
+                char top=stack.pop();
+                if(c==']'&&top!='[')return false;
+                if(c=='}'&&top!='{')return false;
+                if(c==')'&&top!='(')return false;
             }
         }
-        if(st.empty() && !flag)
-            return true;
-        return false;
+        if(!stack.empty())return false;
+        return true;
     }
 }
