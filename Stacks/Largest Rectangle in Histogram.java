@@ -16,79 +16,64 @@ Constraints:
 
 class Solution {
     public int largestRectangleArea(int[] heights) {
-        int n = heights.length;
-        
-        int []left = NSL(heights,n);//Nearest Smaller to Left
-        int []right = NSR(heights,n);//Neartest Smaller to Right
-        
-        int width[] = new int[n];
+        /* The idea is to find the maximum width u can get for each building height.
+            This can be obtained by finding the index of NSR and index of NSL.
+            NSR = > Nearest Smaller to the Right
+            NSL = > Nearest Smaller to the Left
+            Then calculate the maximum width array using NSR[i]-NSL[i]
+            The calculate area array as max_width[i]*height[i]
+            Then the answer can be found as the maximum element present in area array */
+        int n=heights.length;
+        int []NSR=getNSR(heights,n);
+        int []NSL=getNSL(heights,n);
+
+        int []max_width=new int[n];
         for(int i=0;i<n;i++)
-            width[i] = right[i]-left[i]-1;
+            max_width[i]=NSR[i]-NSL[i]-1;
         
-        int max_area=-1;
-        for(int i=0;i<n;i++)
-            max_area=Math.max(max_area,heights[i]*width[i]);
+        int []area=new int[n]; // for this question you don't need to store the area array. But it is useful if the interviewer asks maximum area contribution by each building
+        int max_area=0;
+        for(int i=0;i<n;i++){
+            area[i]=max_width[i]*heights[i];
+            max_area=Math.max(max_area,area[i]);
+        }
         
         return max_area;
     }
     
-    int[] NSL(int heights[],int n) //Nearest Smallest to Left
-    {
-        int a[]=new int[n];
-        Stack<Pair> stack=new Stack<>();
-        for(int i=0;i<n;i++)
-        {
+    int[] getNSR(int []arr,int n){
+        int []ans=new int[n];
+        ans[n-1]=n;
+        Stack<Integer> stack=new Stack<>();
+        stack.push(n-1);
+        
+        for(int i=n-2;i>=0;i--){
+            while(!stack.empty() && arr[i]<=arr[stack.peek()])
+                stack.pop();
             if(stack.empty())
-                a[i]=-1;
-            else if(!stack.empty() && stack.peek().height<heights[i])
-                a[i]=stack.peek().index;
-            else if(!stack.empty() && stack.peek().height>=heights[i])
-            {
-                while(!stack.empty() && stack.peek().height>=heights[i])
-                    stack.pop();
-                if(stack.empty())
-                    a[i]=-1;
-                else
-                    a[i]=stack.peek().index;
-            }
-            stack.push(new Pair(heights[i],i));
+                ans[i]=n;
+            else
+                ans[i]=stack.peek();
+            stack.push(i);
         }
-        return a;
+        return ans;
     }
     
-    int[] NSR(int heights[],int n) // Nearest Smallest to Right
-    {
-        int a[]=new int[n];
-        Stack<Pair> stack=new Stack<>();
-        for(int i=n-1;i>=0;i--)
-        {
+    int[] getNSL(int []arr,int n){
+        int []ans=new int[n];
+        ans[0]=-1;
+        Stack<Integer> stack=new Stack<>();
+        stack.push(0);
+        
+        for(int i=1;i<n;i++){
+            while(!stack.empty() && arr[i]<=arr[stack.peek()])
+                stack.pop();
             if(stack.empty())
-                a[i]=n;
-            else if(!stack.empty() && stack.peek().height<heights[i])
-                a[i]=stack.peek().index;
-            else if(!stack.empty() && stack.peek().height>=heights[i])
-            {
-                while(!stack.empty() && stack.peek().height>=heights[i])
-                    stack.pop();
-                if(stack.empty())
-                    a[i]=n;
-                else
-                    a[i]=stack.peek().index;
-            }
-            stack.push(new Pair(heights[i],i));
+                ans[i]=-1;
+            else
+                ans[i]=stack.peek();
+            stack.push(i);
         }
-        return a;
-    }
-}
-
-class Pair
-{
-    int height;
-    int index;
-    
-    public Pair(int height,int index)
-    {
-        this.height = height;
-        this.index = index;
+        return ans;
     }
 }
